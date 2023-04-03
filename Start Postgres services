@@ -1,0 +1,4 @@
+a.	Verify the recovery.conf file created as part of basebackup has the parameter standby_mode=’on’. 
+cat /var/lib/pgsql/13/data/recovery.conf | grep standby
+b.	Start the postgres services
+/usr/pgsql-13/bin/pg_ctl start -D /var/lib/pgsql/13/data
