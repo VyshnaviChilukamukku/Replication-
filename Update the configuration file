@@ -1,0 +1,13 @@
+-------------After creating replication user ------------
+
+a.	Update the pg_hba.conf file. 
+show hba_file;
+
+b.	Make a backup copy of the hba file, edit the file, comment the existing replication lines(shown below) and add the highlighted lines
+host replication repuser 10.106.5.38/32 trust
+host replication repuser 10.106.4.173/32 trust
+
+The first entry of 10.106.5.38denotes the primary server related entry and the second line having 10.106.4.173 is for the secondary server. 
+
+c.	Perform a pg_ctl reload for the parameters to get impacted. (DO NOT do a RESTART).
+/usr/pgsql-13/bin/pg_ctl reload –D /var/lib/pgsql/13/data
