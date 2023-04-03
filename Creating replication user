@@ -1,0 +1,4 @@
+a.	Create replication user
+psql –U postgres
+CREATE USER repuser REPLICATION ENCRYPTED PASSWORD 'Password';
+ALTER ROLE repuser WITH LOGIN PASSWORD 'Passw0rd';
