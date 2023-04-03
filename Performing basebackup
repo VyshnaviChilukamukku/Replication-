@@ -1,0 +1,32 @@
+a.	Stop postgres services on standby DB server. 
+/usr/pgsql-13/bin/pg_ctl stop  -D /var/lib/pgsql/13/data
+b.	Take a copy of the pgdata folder.
+cd /var/lib/pgsql/13
+mv data data_bkp
+c.	Create a blank data directory and assign privileges to postgres user.
+mkdir data      
+chown postgres:postgres data
+d.	Check connectivity to primary DB using the repuser credentials.
+/usr/pgsql-13/bin/psql -U repuser -h 10.106.5.38 -d postgres
+password:repuser password
+We should be able to connect to postgres prompt on primary site. 
+\conninfo
+The above command would give the connection details, with the username, db connected to and host IP to which we have connected to. Make sure the IP is of the primary. 
+e.	Perform a pg_basebackup on standby server (10.106.4.173) for setting up replica.
+cd /var/lib/pgsql/13/data
+
+/usr/pgsql-13/bin/pg_basebackup -v -D /var/lib/pgsql/13/data -R -P -h 10.106.5.38 -U repuser 
+password:repuser password
+Note: The IP used in the command is of primary, meaning, we are taking a backup of pgdata from primary and pasting it on the standby site to have both in sync. 
+
+The result looks like below. 
+
+    pg_basebackup: initiating base backup, waiting for checkpoint to complete
+    pg_basebackup: checkpoint completed
+    pg_basebackup: write-ahead log start point: 0/80000028 on timeline 1
+    pg_basebackup: starting background WAL receiver
+    pg_basebackup: created temporary replication slot "pg_basebackup_20824"
+    32594/32594 kB (100%), 1/1 tablespace
+    pg_basebackup: write-ahead log end point: 0/800000F8
+    pg_basebackup: waiting for background process to finish streaming ...
+    pg_basebackup: base backup completed
