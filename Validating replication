@@ -1,0 +1,6 @@
+a.	Connect to postgres on standby site and run the following command. This should return “t” as result, referring to true. 
+psql -U postgres
+SELECT pg_is_in_recovery();
+
+b.	Connect to Primary server and run the following command. It should show the slave details. 
+select * from pg_stat_replication;
