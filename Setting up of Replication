@@ -8,6 +8,11 @@ Secondary(DR): lnx0406
 1.	Create password less authentication between the primary and secondary servers. 
 
 2.	Make sure the following values are set in the postgres.conf file in primary server.
+              
+              wal_level = replica      
+               wal_keep_segments = 500
+               max_wal_senders=4
+
 
 3.	Create replication user and update in pg_hba.conf file.
 
